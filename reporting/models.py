@@ -3,7 +3,7 @@ SQLAlchemy models that mirror the Django models for read-only access
 These models map to the same database tables created by Django
 """
 
-from sqlalchemy import Column, Integer, String, Text, DateTime, Date, Time, Decimal, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, DateTime, Date, Time, Boolean, ForeignKey, Numeric
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -41,7 +41,7 @@ class Farm(Base):
     name = Column(String(255))
     agent_id = Column(Integer, ForeignKey("users.id"))
     location = Column(String(500))
-    size_acres = Column(Decimal(10, 2))
+    size_acres = Column(Numeric(10, 2))
     description = Column(Text)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime)
@@ -63,8 +63,8 @@ class Cow(Base):
     farmer_id = Column(Integer, ForeignKey("users.id"))
     farm_id = Column(Integer, ForeignKey("farms.id"))
     date_of_birth = Column(Date)
-    weight_kg = Column(Decimal(6, 2))
-    height_cm = Column(Decimal(5, 2))
+    weight_kg = Column(Numeric(6, 2))
+    height_cm = Column(Numeric(5, 2))
     status = Column(String(20))
     is_pregnant = Column(Boolean, default=False)
     last_breeding_date = Column(Date)
@@ -86,11 +86,11 @@ class MilkRecord(Base):
     farmer_id = Column(Integer, ForeignKey("users.id"))
     farm_id = Column(Integer, ForeignKey("farms.id"))
     date = Column(Date)
-    morning_quantity_liters = Column(Decimal(6, 2))
-    evening_quantity_liters = Column(Decimal(6, 2))
-    total_quantity_liters = Column(Decimal(6, 2))
-    fat_percentage = Column(Decimal(4, 2))
-    protein_percentage = Column(Decimal(4, 2))
+    morning_quantity_liters = Column(Numeric(6, 2))
+    evening_quantity_liters = Column(Numeric(6, 2))
+    total_quantity_liters = Column(Numeric(6, 2))
+    fat_percentage = Column(Numeric(4, 2))
+    protein_percentage = Column(Numeric(4, 2))
     quality_rating = Column(String(20))
     notes = Column(Text)
     created_at = Column(DateTime)
@@ -116,7 +116,7 @@ class Activity(Base):
     status = Column(String(20))
     description = Column(Text)
     notes = Column(Text)
-    cost = Column(Decimal(10, 2))
+    cost = Column(Numeric(10, 2))
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
     

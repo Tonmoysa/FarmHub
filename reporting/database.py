@@ -44,7 +44,8 @@ def test_connection():
     """
     try:
         db = SessionLocal()
-        result = db.execute("SELECT 1").fetchone()
+        from sqlalchemy import text
+        result = db.execute(text("SELECT 1")).fetchone()
         db.close()
         return True
     except Exception as e:
