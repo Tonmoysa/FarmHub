@@ -128,22 +128,14 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Django specific
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-media/
-staticfiles/
-
-# IDE specific files
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# OS generated files
+# OS
 .DS_Store
 .DS_Store?
 ._*
@@ -152,7 +144,29 @@ staticfiles/
 ehthumbs.db
 Thumbs.db
 
-# Backup files
-*.bak
-*.backup
-*.tmp
+# FastAPI
+.pytest_cache/
+
+# Database
+*.db
+*.sqlite
+
+# Media files (Django)
+media/
+
+# Static files (Django)
+staticfiles/
+
+# Local environment variables
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/

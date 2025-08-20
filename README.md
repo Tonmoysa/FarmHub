@@ -1,72 +1,26 @@
-# FarmHub - Django Core Project
+# FarmHub
 
-This is the core Django project for FarmHub with Django REST Framework integration.
+A comprehensive farm management system with Django and FastAPI services.
 
 ## Project Structure
 
-```
-FarmHub/
-├── core/                 # Django project settings
-│   ├── __init__.py
-│   ├── settings.py      # Project settings with DRF configuration
-│   ├── urls.py          # Main URL configuration
-│   ├── wsgi.py          # WSGI configuration
-│   └── asgi.py          # ASGI configuration
-├── manage.py            # Django management script
-├── requirements.txt     # Python dependencies
-├── venv/               # Python virtual environment
-└── README.md           # This file
-```
+- `core/` - Django service for core farm management functionality
+- `reporting/` - FastAPI service for reporting and analytics
 
-## Setup Instructions
+## Setup
 
-1. **Activate Virtual Environment:**
+1. Activate the virtual environment:
    ```bash
-   # Windows
-   .\venv\Scripts\activate
-   
-   # Linux/Mac
-   source venv/bin/activate
+   source venv/Scripts/activate  # Windows
    ```
 
-2. **Install Dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+2. Install dependencies (to be added)
 
-3. **Run Migrations:**
-   ```bash
-   python manage.py migrate
-   ```
+3. Run the services (instructions to be added)
 
-4. **Create Superuser (Optional):**
-   ```bash
-   python manage.py createsuperuser
-   ```
+## Development
 
-5. **Run Development Server:**
-   ```bash
-   python manage.py runserver
-   ```
-
-## Installed Packages
-
-- Django 5.2.5
-- Django REST Framework 3.16.1
-
-## Django REST Framework Configuration
-
-The project is configured with the following DRF settings:
-
-- **Authentication:** Session and Basic Authentication
-- **Permissions:** IsAuthenticated (default)
-- **Pagination:** PageNumberPagination with 10 items per page
-
-## Next Steps
-
-This is the initial project setup. The next steps would be to:
-1. Create Django apps for specific functionality
-2. Define models
-3. Create serializers
-4. Implement views and viewsets
-5. Configure URL routing
+This project uses:
+- Django for the core backend service
+- FastAPI for the reporting service
+- Git for version control
