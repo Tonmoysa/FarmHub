@@ -1,13 +1,12 @@
-#!/bin/bash
-# Build script for FarmHub Django API
+#!/usr/bin/env bash
+# exit on error
+set -o errexit
 
-echo "Installing dependencies..."
+# Install dependencies
 pip install -r requirements.txt
 
-echo "Collecting static files..."
+# Collect static files
 python manage.py collectstatic --no-input
 
-echo "Running migrations..."
+# Run database migrations
 python manage.py migrate
-
-echo "Build completed successfully!"

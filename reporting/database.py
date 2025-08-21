@@ -12,8 +12,12 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Production PostgreSQL configuration for Render
-DATABASE_URL = "postgresql://farmhub_3l2z_user:QCTGvShsswsHjotWftVYt6RktgLGPRht@dpg-d2jidgn5r7bs73eu3k80-a.frankfurt-postgres.render.com:5432/farmhub_3l2z"
+# Database URL - use environment variable for production, fallback to local SQLite
+DATABASE_URL = os.environ.get('DATABASE_URL', "sqlite:///../core/db.sqlite3")
+
+# Production PostgreSQL configuration for Render (fallback)
+if not DATABASE_URL or DATABASE_URL.startswith("sqlite"):
+    DATABASE_URL = "postgresql://farmhub_3l2z_user:QCTGvShsswsHjotWftVYt6RktgLGPRht@dpg-d2jidgn5r7bs73eu3k80-a.frankfurt-postgres.render.com:5432/farmhub_3l2z"
 
 # Handle PostgreSQL URL format for Render
 if DATABASE_URL.startswith("postgres://"):

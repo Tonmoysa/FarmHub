@@ -99,21 +99,31 @@ WSGI_APPLICATION = 'core_service.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 # Database configuration
-# Production PostgreSQL configuration for Render
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'farmhub_3l2z',
-        'USER': 'farmhub_3l2z_user',
-        'PASSWORD': 'QCTGvShsswsHjotWftVYt6RktgLGPRht',
-        'HOST': 'dpg-d2jidgn5r7bs73eu3k80-a.frankfurt-postgres.render.com',
-        'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
-        'CONN_MAX_AGE': 600,
+# Use environment variable for database URL if available, otherwise use local settings
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DATABASE_URL:
+    # Use the external database URL for production/deployment
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
     }
-}
+else:
+    # Production PostgreSQL configuration for Render
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'farmhub_3l2z',
+            'USER': 'farmhub_3l2z_user',
+            'PASSWORD': 'QCTGvShsswsHjotWftVYt6RktgLGPRht',
+            'HOST': 'dpg-d2jidgn5r7bs73eu3k80-a.frankfurt-postgres.render.com',
+            'PORT': '5432',
+            'OPTIONS': {
+                'sslmode': 'require',
+                'client_encoding': 'UTF8',
+            },
+            'CONN_MAX_AGE': 600,
+        }
+    }
 
 
 

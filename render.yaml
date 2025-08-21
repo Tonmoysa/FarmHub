@@ -3,26 +3,28 @@ services:
     name: farmhub-django-api
     env: python
     plan: free
-    buildCommand: cd core && pip install -r requirements.txt && python manage.py collectstatic --no-input
-    startCommand: cd core && gunicorn core_service.wsgi:application --bind 0.0.0.0:$PORT
+    buildCommand: cd core && chmod +x build.sh && ./build.sh
+    startCommand: cd core && gunicorn core_service.wsgi:application
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.18
-      - key: DATABASE_URL
-        sync: false  # You'll need to set this in Render dashboard
+        value: 3.11.0
+      - key: SECRET_KEY
+        generateValue: true
       - key: DEBUG
-        value: false
+        value: False
       - key: ALLOWED_HOSTS
-        value: .onrender.com
+        value: farmhub-django-api.onrender.com
+      - key: DATABASE_URL
+        value: postgresql://farmhub_3l2z_user:QCTGvShsswsHjotWftVYt6RktgLGPRht@dpg-d2jidgn5r7bs73eu3k80-a.frankfurt-postgres.render.com:5432/farmhub_3l2z
 
   - type: web
-    name: farmhub-reporting-api
+    name: farmhub-fastapi-reporting
     env: python
     plan: free
-    buildCommand: cd reporting && pip install -r requirements-minimal.txt
-    startCommand: cd reporting && python start_simple_render.py
+    buildCommand: cd reporting && pip install -r requirements.txt
+    startCommand: cd reporting && uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.7
+        value: 3.11.0
       - key: DATABASE_URL
-        sync: false  # You'll need to set this in Render dashboard
+        value: postgresql://farmhub_3l2z_user:QCTGvShsswsHjotWftVYt6RktgLGPRht@dpg-d2jidgn5r7bs73eu3k80-a.frankfurt-postgres.render.com:5432/farmhub_3l2z
