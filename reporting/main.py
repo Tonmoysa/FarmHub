@@ -65,7 +65,9 @@ async def test_endpoint():
         "message": "All endpoints are loaded successfully!",
         "service": "FarmHub Reporting Service",
         "version": "1.0.0",
-        "status": "running"
+        "status": "running",
+        "total_endpoints": 25,
+        "deployment": "production"
     }
 
 # User endpoints
