@@ -10,7 +10,7 @@ from decimal import Decimal
 class BaseSchema(BaseModel):
     """Base schema with common configuration"""
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 # User schemas
 class UserResponse(BaseSchema):
