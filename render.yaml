@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: farmhub-reporting-api
+    env: python
+    plan: free
+    buildCommand: cd reporting && pip install -r requirements-render.txt
+    startCommand: cd reporting && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.16
+      - key: DATABASE_URL
+        sync: false  # You'll need to set this in Render dashboard
