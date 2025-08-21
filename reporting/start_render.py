@@ -13,7 +13,7 @@ if __name__ == "__main__":
     
     try:
         uvicorn.run(
-            "main:app",
+            "main_minimal:app",
             host="0.0.0.0",
             port=port,
             reload=False,
