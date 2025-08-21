@@ -1,93 +1,74 @@
 # FarmHub Reporting Service
 
-A FastAPI-based read-only reporting and analytics service for the FarmHub system. This service connects to the Django core database to provide real-time reporting and data visualization capabilities.
+A FastAPI-based microservice for analytics and reporting in the FarmHub farm management platform.
 
-## Features
+## 🎯 Overview
 
-- **Read-only Access**: Safe reporting service that doesn't modify core data
-- **RESTful API**: FastAPI-based endpoints with automatic documentation
-- **Real-time Data**: Direct connection to Django database for live data
-- **Comprehensive Reports**: Production, activity, health, and financial reporting
-- **API Documentation**: Automatic OpenAPI/Swagger documentation
+The Reporting Service is an independent FastAPI application that provides read-only access to FarmHub data for analytics, reporting, and business intelligence. It connects directly to the Django database to provide real-time insights without affecting the core system.
 
-## API Endpoints
+### Key Features
+- **Read-only Access**: Safe reporting without data modification
+- **Real-time Analytics**: Live data from Django database
+- **RESTful API**: FastAPI with automatic OpenAPI documentation
+- **Aggregated Reports**: Production summaries, activity tracking, and farm-level analytics
 
-### Core Data Endpoints
-- `GET /users` - List users with filtering
-- `GET /farms` - List farms with filtering  
-- `GET /cows` - List cows with filtering
-- `GET /milk-records` - List milk records with filtering
-- `GET /activities` - List activities with filtering
+## 🚀 Setup Instructions
 
-### Reporting Endpoints
-- `GET /reports/production-summary` - Milk production summary
-- `GET /reports/activity-summary` - Activity summary
-- `GET /health` - Service health check
-- `GET /docs` - API documentation (Swagger UI)
-
-## Installation
-
-1. Install dependencies:
+### 1. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Start the service:
+### 2. Start the Service
 ```bash
+# Using uvicorn directly
+uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+
+# Or run the main script
 python main.py
 ```
 
-Or using uvicorn directly:
-```bash
-uvicorn main:app --host 0.0.0.0 --port 8001 --reload
-```
+### 3. Verify Installation
+Visit `http://localhost:8001/health` to check service status.
 
-## Configuration
+## 📊 API Overview
 
-The service is configured to:
-- Connect to the Django SQLite database at `../core/db.sqlite3`
-- Run on port 8001 (Django runs on 8000)
-- Provide read-only access to prevent data corruption
-- Include CORS middleware for web client access
+### Core Endpoints
+- `GET /` - Service information
+- `GET /health` - Health check
+- `GET /docs` - Interactive API documentation (Swagger UI)
+- `GET /redoc` - Alternative API documentation
 
-## Database Connection
+### Data Endpoints
+- `GET /users` - User data with filtering
+- `GET /farms` - Farm information
+- `GET /cows` - Livestock data
+- `GET /milk-records` - Production records
+- `GET /activities` - Activity tracking
 
-The service uses SQLAlchemy to connect to the same SQLite database used by Django. The models in `models.py` mirror the Django models but are read-only.
+### Reporting Endpoints
+- `GET /reports/production-summary` - Milk production analytics
+- `GET /reports/activity-summary` - Activity summaries
+- `GET /reports/farm-summary` - Farm-level reports
+- `GET /reports/milk-production` - Filtered production data
+- `GET /reports/recent-activities` - Recent activity tracking
 
-## API Documentation
+## 🔧 Configuration
 
-Once the service is running, visit:
-- `http://localhost:8001/docs` - Swagger UI documentation
-- `http://localhost:8001/redoc` - ReDoc documentation
+The service automatically connects to the Django SQLite database at `../core/db.sqlite3`. For production, update the database connection in `database.py`.
 
-## Usage Examples
+## 📖 Documentation
 
-### Get Production Summary
-```bash
-curl "http://localhost:8001/reports/production-summary?from_date=2024-01-01&to_date=2024-01-31"
-```
+- **Interactive API Docs**: `http://localhost:8001/docs`
+- **ReDoc Documentation**: `http://localhost:8001/redoc`
+- **Main FarmHub Documentation**: See root `README.md`
 
-### Get Milk Records for a Farm
-```bash
-curl "http://localhost:8001/milk-records?farm_id=1&limit=50"
-```
+## 🛡️ Security
 
-### Get Activity Summary
-```bash
-curl "http://localhost:8001/reports/activity-summary?activity_type=VACCINATION"
-```
+- Read-only database access
+- No authentication required (add as needed for production)
+- CORS enabled for web client access
 
-## Development
+---
 
-The service is built with:
-- **FastAPI**: Modern, fast web framework
-- **SQLAlchemy**: Database ORM for model definitions
-- **Pydantic**: Data validation and serialization
-- **Uvicorn**: ASGI server for development and production
-
-## Security Notes
-
-- This is a read-only service - no write operations are supported
-- All database connections are read-only
-- CORS is configured for development (adjust for production)
-- No authentication is implemented (add as needed for production)
+**Note**: For complete FarmHub setup and usage instructions, refer to the main `README.md` in the project root.
