@@ -101,6 +101,18 @@ class ActivitySummary(BaseSchema):
     activity_types: Dict[str, int]
     date_range: Dict[str, Optional[date]]
 
+class FarmSummary(BaseSchema):
+    farm_id: Optional[int] = None
+    farm_name: str
+    agent_name: str
+    farmer_count: int
+    cow_count: int
+    total_milk_production_liters: float
+    recent_milk_production_liters: float
+    farm_status: str
+    location: Optional[str] = None
+    size_acres: Optional[float] = None
+
 # Enhanced response schemas with relationships
 class CowWithRelations(CowResponse):
     farmer: Optional[UserResponse] = None
