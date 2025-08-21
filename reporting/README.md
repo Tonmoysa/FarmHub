@@ -22,14 +22,14 @@ pip install -r requirements.txt
 ### 2. Start the Service
 ```bash
 # Using uvicorn directly
-uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+uvicorn main:app --host 127.0.0.1 --port 8001 --reload
 
 # Or run the main script
 python main.py
 ```
 
 ### 3. Verify Installation
-Visit `http://localhost:8001/health` to check service status.
+Visit `http://127.0.0.1:8001/health` or `http://localhost:8001/health` to check service status.
 
 ## 📊 API Overview
 
@@ -59,8 +59,8 @@ The service automatically connects to the Django SQLite database at `../core/db.
 
 ## 📖 Documentation
 
-- **Interactive API Docs**: `http://localhost:8001/docs`
-- **ReDoc Documentation**: `http://localhost:8001/redoc`
+- **Interactive API Docs**: `http://127.0.0.1:8001/docs` or `http://localhost:8001/docs`
+- **ReDoc Documentation**: `http://127.0.0.1:8001/redoc` or `http://localhost:8001/redoc`
 - **Main FarmHub Documentation**: See root `README.md`
 
 ## 🛡️ Security
