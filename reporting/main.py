@@ -6,74 +6,55 @@ Read-only reporting service that connects to the Django core database
 from fastapi import FastAPI, Depends, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from sqlalchemy.orm import Session
 from typing import List, Optional
 import uvicorn
 from datetime import date, datetime, timedelta
 from sqlalchemy import func, and_
 
-from database import get_db, SessionLocal
+from database import get_db, SessionLocal, test_connection
 from models import User, Farm, Cow, MilkRecord, Activity
 from schemas import (
     UserResponse, FarmResponse, CowResponse, 
     MilkRecordResponse, ActivityResponse,
-    ProductionSummary, ActivitySummary
+    ProductionSummary, ActivitySummary, FarmSummary
 )
 
 # Initialize FastAPI app
 app = FastAPI(
     title="FarmHub Reporting Service",
-    description="Read-only reporting and analytics service for FarmHub system",
-    version="1.0.0",
-    docs_url="/docs",
-    redoc_url="/redoc"
+    description="Read-only reporting service for FarmHub farm management platform",
+    version="1.0.0"
 )
 
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
+    allow_origins=["*"],  # Configure this properly for production
     allow_credentials=True,
-    allow_methods=["GET"],  # Only allow GET requests for read-only service
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
 @app.get("/")
 async def root():
-    """Root endpoint with service information"""
+    """Service information"""
     return {
         "service": "FarmHub Reporting Service",
         "version": "1.0.0",
-        "description": "Read-only reporting and analytics for FarmHub",
-        "endpoints": {
-            "docs": "/docs",
-            "health": "/health",
-            "users": "/users",
-            "farms": "/farms", 
-            "cows": "/cows",
-            "milk_records": "/milk-records",
-            "activities": "/activities",
-            "reports": "/reports",
-            "farm_summary": "/reports/farm-summary",
-            "milk_production": "/reports/milk-production",
-            "recent_activities": "/reports/recent-activities"
-        }
+        "description": "Read-only reporting service for farm management analytics",
+        "docs": "/docs"
     }
 
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
-    try:
-        # Test database connection
-        db = SessionLocal()
-        from sqlalchemy import text
-        db.execute(text("SELECT 1"))
-        db.close()
-        return {"status": "healthy", "database": "connected"}
-    except Exception as e:
-        return JSONResponse(
-            status_code=503,
-            content={"status": "unhealthy", "error": str(e)}
-        )
+    db_status = test_connection()
+    return {
+        "status": "healthy" if db_status else "unhealthy",
+        "database": "connected" if db_status else "disconnected",
+        "timestamp": datetime.utcnow().isoformat()
+    }
 
 # User endpoints
 @app.get("/users", response_model=List[UserResponse])
@@ -304,7 +285,7 @@ async def get_activity_summary(
 
 # NEW ENDPOINTS
 
-@app.get("/reports/farm-summary")
+@app.get("/reports/farm-summary", response_model=FarmSummary)
 async def get_farm_summary(
     farm_id: Optional[int] = Query(None),
     db: SessionLocal = Depends(get_db)
@@ -336,18 +317,18 @@ async def get_farm_summary(
             and_(MilkRecord.farm_id == farm_id, MilkRecord.date >= thirty_days_ago)
         ).scalar() or 0
         
-        return {
-            "farm_id": farm.id,
-            "farm_name": farm.name,
-            "agent_name": f"{farm.agent.first_name} {farm.agent.last_name}" if farm.agent else "Unknown",
-            "farmer_count": farmer_count,
-            "cow_count": cow_count,
-            "total_milk_production_liters": float(total_milk),
-            "recent_milk_production_liters": float(recent_milk),
-            "farm_status": "Active" if farm.is_active else "Inactive",
-            "location": farm.location,
-            "size_acres": float(farm.size_acres) if farm.size_acres else None
-        }
+        return FarmSummary(
+            farm_id=farm.id,
+            farm_name=farm.name,
+            agent_name=f"{farm.agent.first_name} {farm.agent.last_name}" if farm.agent else "Unknown",
+            farmer_count=farmer_count,
+            cow_count=cow_count,
+            total_milk_production_liters=float(total_milk),
+            recent_milk_production_liters=float(recent_milk),
+            farm_status="Active" if farm.is_active else "Inactive",
+            location=farm.location,
+            size_acres=float(farm.size_acres) if farm.size_acres else None
+        )
     else:
         # Get summary for all farms
         farms = db.query(Farm).all()
@@ -382,16 +363,18 @@ async def get_farm_summary(
         total_cows = sum(fs["cow_count"] for fs in farm_summaries)
         total_milk = sum(fs["total_milk_production_liters"] for fs in farm_summaries)
         
-        return {
-            "overall_summary": {
-                "total_farms": len(farms),
-                "active_farms": len([f for f in farms if f.is_active]),
-                "total_farmers": total_farmers,
-                "total_cows": total_cows,
-                "total_milk_production_liters": total_milk
-            },
-            "farm_details": farm_summaries
-        }
+        return FarmSummary(
+            farm_id=None, # No single farm ID for overall summary
+            farm_name="Overall",
+            agent_name="N/A",
+            farmer_count=total_farmers,
+            cow_count=total_cows,
+            total_milk_production_liters=total_milk,
+            recent_milk_production_liters=0, # No recent milk for overall summary
+            farm_status="N/A",
+            location="N/A",
+            size_acres=None
+        )
 
 @app.get("/reports/milk-production")
 async def get_milk_production_filtered(

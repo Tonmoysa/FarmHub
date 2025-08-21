@@ -1,0 +1,232 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$VWhE7FXuwcRwEgBeGLbNI5$3z0Qbc2CzBjlYC4u6QplHoej0g8xLM0DSKc1khjPp1Y=",
+      "last_login": null,
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "Super",
+      "last_name": "Admin",
+      "email": "admin@example.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-01-01T00:00:00Z",
+      "role": "SUPER_ADMIN",
+      "phone_number": "+1234567890",
+      "address": "123 Admin Street, Admin City",
+      "date_of_birth": "1980-01-01",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$4ffnaXFdJJhuRH50Zjb8kc$c3JPxB17tOQTPSuDEjdAdf/VFHXYgb/Us5YGz89nAb0=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "agent1",
+      "first_name": "John",
+      "last_name": "Agent",
+      "email": "agent1@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-01-01T00:00:00Z",
+      "role": "AGENT",
+      "phone_number": "+1234567891",
+      "address": "456 Agent Avenue, Agent Town",
+      "date_of_birth": "1985-05-15",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$9DVJGT4YiZFaujALJKsRPE$8WE3R7esD9hxQWwQSKe6j5tXdVp7P2n7l0gUQg3QrKI=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "farmer1",
+      "first_name": "Mike",
+      "last_name": "Farmer",
+      "email": "farmer1@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-01-01T00:00:00Z",
+      "role": "FARMER",
+      "phone_number": "+1234567892",
+      "address": "789 Farm Road, Farm Village",
+      "date_of_birth": "1990-08-20",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "farms.farm",
+    "pk": 1,
+    "fields": {
+      "name": "Green Valley Farm",
+      "agent": 2,
+      "location": "123 Green Valley Road, Rural County, State 12345",
+      "size_acres": "150.00",
+      "description": "A beautiful dairy farm located in the green valley with excellent grazing conditions and modern milking facilities.",
+      "is_active": true,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "cows.cow",
+    "pk": 1,
+    "fields": {
+      "tag_number": "COW001",
+      "name": "Bessie",
+      "breed": "HOLSTEIN",
+      "farmer": 3,
+      "farm": 1,
+      "date_of_birth": "2020-03-15",
+      "weight_kg": "650.00",
+      "height_cm": "145.00",
+      "status": "ACTIVE",
+      "is_pregnant": false,
+      "last_breeding_date": null,
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "cows.cow",
+    "pk": 2,
+    "fields": {
+      "tag_number": "COW002",
+      "name": "Daisy",
+      "breed": "JERSEY",
+      "farmer": 3,
+      "farm": 1,
+      "date_of_birth": "2019-07-22",
+      "weight_kg": "450.00",
+      "height_cm": "130.00",
+      "status": "ACTIVE",
+      "is_pregnant": true,
+      "last_breeding_date": "2024-01-15",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "milk.milkrecord",
+    "pk": 1,
+    "fields": {
+      "cow": 1,
+      "farmer": 3,
+      "farm": 1,
+      "date": "2024-01-15",
+      "morning_quantity_liters": "12.50",
+      "evening_quantity_liters": "11.75",
+      "total_quantity_liters": "24.25",
+      "fat_percentage": "3.85",
+      "protein_percentage": "3.20",
+      "quality_rating": "EXCELLENT",
+      "notes": "Excellent milk quality today. Cow appears healthy and content.",
+      "created_at": "2024-01-15T06:00:00Z",
+      "updated_at": "2024-01-15T06:00:00Z"
+    }
+  },
+  {
+    "model": "milk.milkrecord",
+    "pk": 2,
+    "fields": {
+      "cow": 2,
+      "farmer": 3,
+      "farm": 1,
+      "date": "2024-01-15",
+      "morning_quantity_liters": "8.25",
+      "evening_quantity_liters": "7.50",
+      "total_quantity_liters": "15.75",
+      "fat_percentage": "4.20",
+      "protein_percentage": "3.45",
+      "quality_rating": "EXCELLENT",
+      "notes": "High fat content typical for Jersey breed. Good production for pregnant cow.",
+      "created_at": "2024-01-15T06:00:00Z",
+      "updated_at": "2024-01-15T06:00:00Z"
+    }
+  },
+  {
+    "model": "milk.milkrecord",
+    "pk": 3,
+    "fields": {
+      "cow": 1,
+      "farmer": 3,
+      "farm": 1,
+      "date": "2024-01-16",
+      "morning_quantity_liters": "12.00",
+      "evening_quantity_liters": "11.25",
+      "total_quantity_liters": "23.25",
+      "fat_percentage": "3.80",
+      "protein_percentage": "3.15",
+      "quality_rating": "GOOD",
+      "notes": "Slightly lower production but still good quality. Weather was cooler today.",
+      "created_at": "2024-01-16T06:00:00Z",
+      "updated_at": "2024-01-16T06:00:00Z"
+    }
+  },
+  {
+    "model": "activities.activity",
+    "pk": 1,
+    "fields": {
+      "title": "Annual Vaccination - Bessie",
+      "activity_type": "VACCINATION",
+      "cow": 1,
+      "scheduled_date": "2024-01-20",
+      "scheduled_time": "09:00:00",
+      "start_time": "2024-01-20T09:00:00Z",
+      "end_time": "2024-01-20T09:30:00Z",
+      "status": "COMPLETED",
+      "description": "Annual vaccination schedule for Bessie. Administered standard dairy cow vaccines including BVD, IBR, and Leptospirosis.",
+      "notes": "Cow handled well. No adverse reactions observed. Next vaccination due in 12 months.",
+      "cost": "45.00",
+      "created_at": "2024-01-15T00:00:00Z",
+      "updated_at": "2024-01-20T09:30:00Z"
+    }
+  },
+  {
+    "model": "activities.activity",
+    "pk": 2,
+    "fields": {
+      "title": "Health Check - Daisy",
+      "activity_type": "HEALTH_CHECK",
+      "cow": 2,
+      "scheduled_date": "2024-01-25",
+      "scheduled_time": "14:00:00",
+      "start_time": "2024-01-25T14:00:00Z",
+      "end_time": "2024-01-25T14:45:00Z",
+      "status": "COMPLETED",
+      "description": "Routine health check for Daisy. Pregnancy confirmation and general health assessment.",
+      "notes": "Pregnancy confirmed. Cow is in good health. Estimated due date: October 2024. Weight and condition excellent.",
+      "cost": "75.00",
+      "created_at": "2024-01-20T00:00:00Z",
+      "updated_at": "2024-01-25T14:45:00Z"
+    }
+  },
+  {
+    "model": "activities.activity",
+    "pk": 3,
+    "fields": {
+      "title": "Scheduled Milking Equipment Maintenance",
+      "activity_type": "MAINTENANCE",
+      "cow": 1,
+      "scheduled_date": "2024-02-01",
+      "scheduled_time": "10:00:00",
+      "status": "PLANNED",
+      "description": "Regular maintenance of milking equipment and facilities to ensure optimal operation.",
+      "notes": "Preventive maintenance to avoid equipment failure during peak milking times.",
+      "cost": "200.00",
+      "created_at": "2024-01-25T00:00:00Z",
+      "updated_at": "2024-01-25T00:00:00Z"
+    }
+  }
+]

@@ -1,26 +1,46 @@
 """
 Database configuration for FastAPI reporting service
-Connects to the Django SQLite database in read-only mode
+Connects to the Django database in read-only mode
 """
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
+from dotenv import load_dotenv
 
-# Database URL - point to the Django SQLite database
-DATABASE_URL = "sqlite:///../core/db.sqlite3"
+# Load environment variables
+load_dotenv()
 
-# Create engine with read-only configuration
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={
-        "check_same_thread": False,  # Required for SQLite with FastAPI
-        "uri": True
-    },
-    echo=False,  # Set to True for SQL debugging
-    pool_pre_ping=True
-)
+# Database URL - use environment variable for production, fallback to local SQLite
+DATABASE_URL = os.environ.get('DATABASE_URL', "sqlite:///../core/db.sqlite3")
+
+# Handle PostgreSQL URL format for Render
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+# Create engine with appropriate configuration
+if DATABASE_URL.startswith("sqlite"):
+    # SQLite configuration for local development
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={
+            "check_same_thread": False,  # Required for SQLite with FastAPI
+            "uri": True
+        },
+        echo=False,  # Set to True for SQL debugging
+        pool_pre_ping=True
+    )
+else:
+    # PostgreSQL configuration for production
+    engine = create_engine(
+        DATABASE_URL,
+        echo=False,
+        pool_pre_ping=True,
+        pool_recycle=300,
+        pool_size=10,
+        max_overflow=20
+    )
 
 # Create sessionmaker
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
