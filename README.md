@@ -125,15 +125,36 @@ The platform has three primary roles with proper role-based access control:
 
 ### Authentication
 ```bash
-# Login
-curl -X POST http://localhost:8000/api/auth/login/ \
+# Custom Login (with user details)
+curl -X POST http://localhost:8000/api/users/login/ \
   -H "Content-Type: application/json" \
   -d '{"username": "admin", "password": "admin123"}'
 
-# Get token
+# JWT Token Login
 curl -X POST http://localhost:8000/api/auth/token/ \
   -H "Content-Type: application/json" \
   -d '{"username": "admin", "password": "admin123"}'
+
+# Refresh Token
+curl -X POST http://localhost:8000/api/auth/token/refresh/ \
+  -H "Content-Type: application/json" \
+  -d '{"refresh": "your_refresh_token"}'
+
+# Get User Profile
+curl -X GET http://localhost:8000/api/users/profile/ \
+  -H "Authorization: Bearer your_access_token"
+
+# Change Password
+curl -X POST http://localhost:8000/api/users/change_password/ \
+  -H "Authorization: Bearer your_access_token" \
+  -H "Content-Type: application/json" \
+  -d '{"old_password": "admin123", "new_password": "newpassword123"}'
+
+# Logout
+curl -X POST http://localhost:8000/api/users/logout/ \
+  -H "Authorization: Bearer your_access_token" \
+  -H "Content-Type: application/json" \
+  -d '{"refresh_token": "your_refresh_token"}'
 ```
 
 ### Farm Management
@@ -287,6 +308,27 @@ FarmHub/
 - Role-based access control implemented
 - Reporting service is read-only for data safety
 
+## 📦 Postman Collection
+
+A comprehensive Postman collection is included with this project:
+- **File**: `FarmHub_API_Collection.json`
+- **Features**: 
+  - Complete authentication endpoints
+  - All CRUD operations for Users, Farms, Cows, Milk Records, Activities
+  - Reporting service endpoints
+  - Pre-configured variables for easy testing
+  - Sample request bodies for all endpoints
+
+### Import Instructions:
+1. Open Postman
+2. Click "Import" button
+3. Select `FarmHub_API_Collection.json`
+4. Set environment variables:
+   - `base_url`: `http://localhost:8000`
+   - `reporting_url`: `http://localhost:8001`
+   - `access_token`: (will be set after login)
+   - `refresh_token`: (will be set after login)
+
 ## 📝 License
 
 This project is proprietary software for farm management systems.
@@ -296,3 +338,4 @@ This project is proprietary software for farm management systems.
 For detailed API documentation, visit:
 - Django API: `http://localhost:8000/api/`
 - Reporting API: `http://localhost:8001/docs`
+- Postman Collection: `FarmHub_API_Collection.json`
