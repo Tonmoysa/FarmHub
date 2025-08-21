@@ -3,11 +3,11 @@ services:
     name: farmhub-django-api
     env: python
     plan: free
-    buildCommand: cd core && chmod +x build.sh && ./build.sh
+    buildCommand: cd core && pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate
     startCommand: cd core && gunicorn core_service.wsgi:application
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: 3.11.18
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG
@@ -25,6 +25,6 @@ services:
     startCommand: cd reporting && uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: 3.11.18
       - key: DATABASE_URL
         value: postgresql://farmhub_3l2z_user:QCTGvShsswsHjotWftVYt6RktgLGPRht@dpg-d2jidgn5r7bs73eu3k80-a.frankfurt-postgres.render.com:5432/farmhub_3l2z
