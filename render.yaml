@@ -3,7 +3,7 @@ services:
     name: farmhub-reporting-api
     env: python
     plan: free
-    buildCommand: cd reporting && pip install -r requirements-render.txt
+    buildCommand: cd reporting && pip install -r requirements-minimal.txt
     startCommand: cd reporting && python start_simple_render.py
     envVars:
       - key: PYTHON_VERSION
