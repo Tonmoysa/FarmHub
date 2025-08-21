@@ -18,7 +18,7 @@ This FastAPI service provides read-only reporting endpoints for the FarmHub farm
    - **Name**: `farmhub-reporting-api`
    - **Environment**: `Python`
    - **Build Command**: `cd reporting && pip install -r requirements-render.txt`
-   - **Start Command**: `cd reporting && uvicorn main:app --host 0.0.0.0 --port $PORT`
+   - **Start Command**: `cd reporting && python -m uvicorn main:app --host 0.0.0.0 --port $PORT`
 
 ### Environment Variables
 Set these in your Render service settings:
@@ -36,7 +36,7 @@ cd reporting && pip install -r requirements-render.txt
 
 **Start Command:**
 ```bash
-cd reporting && uvicorn main:app --host 0.0.0.0 --port $PORT
+cd reporting && python -m uvicorn main:app --host 0.0.0.0 --port $PORT
 ```
 
 ### Alternative Start Commands
@@ -47,7 +47,7 @@ cd reporting && python start_production.py
 
 Or directly with uvicorn:
 ```bash
-cd reporting && uvicorn main:app --host 0.0.0.0 --port $PORT --workers 1
+cd reporting && python -m uvicorn main:app --host 0.0.0.0 --port $PORT --workers 1
 ```
 
 ## Service Endpoints

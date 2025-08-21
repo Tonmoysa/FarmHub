@@ -2,15 +2,14 @@
 Pydantic models for API request/response schemas
 """
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional, Dict, Any, List
 from datetime import date, datetime, time
 from decimal import Decimal
 
 class BaseSchema(BaseModel):
     """Base schema with common configuration"""
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # User schemas
 class UserResponse(BaseSchema):
