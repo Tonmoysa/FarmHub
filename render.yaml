@@ -3,7 +3,7 @@ services:
     name: farmhub-django-api
     env: python
     plan: free
-    buildCommand: cd core && pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate
+    buildCommand: cd core && pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate && python manage.py setup_deployment
     startCommand: cd core && gunicorn core_service.wsgi:application
     envVars:
       - key: PYTHON_VERSION
@@ -16,6 +16,12 @@ services:
         value: farmhub-django-api.onrender.com
       - key: DATABASE_URL
         value: postgresql://farmhub_3l2z_user:QCTGvShsswsHjotWftVYt6RktgLGPRht@dpg-d2jidgn5r7bs73eu3k80-a.frankfurt-postgres.render.com:5432/farmhub_3l2z
+      - key: DJANGO_SUPERUSER_USERNAME
+        value: admin
+      - key: DJANGO_SUPERUSER_EMAIL
+        value: admin@farmhub.com
+      - key: DJANGO_SUPERUSER_PASSWORD
+        value: admin123
 
   - type: web
     name: farmhub-fastapi-reporting

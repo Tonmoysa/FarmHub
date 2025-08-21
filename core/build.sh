@@ -10,3 +10,6 @@ python manage.py collectstatic --no-input
 
 # Run database migrations
 python manage.py migrate
+
+# Setup deployment (load initial data and create superuser)
+python manage.py setup_deployment
