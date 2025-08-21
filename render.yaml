@@ -7,6 +7,6 @@ services:
     startCommand: cd reporting && python -m uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.7
+        value: 3.9.16
       - key: DATABASE_URL
         sync: false  # You'll need to set this in Render dashboard
