@@ -2,8 +2,9 @@
 	"info": {
 		"_postman_id": "farmhub-api-collection",
 		"name": "FarmHub API Collection",
-		"description": "Complete API collection for FarmHub farm management platform including authentication, CRUD operations, and reporting endpoints",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"description": "Complete API collection for FarmHub farm management platform including Django REST Framework (DRF) core service and FastAPI reporting service. Features role-based authentication, comprehensive CRUD operations, advanced filtering, and detailed reporting endpoints.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "farmhub-api-collection"
 	},
 	"item": [
 		{
@@ -21,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+							"raw": "{\n    \"username\": \"{{admin_username}}\",\n    \"password\": \"{{admin_password}}\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/users/login/",
@@ -35,7 +36,25 @@
 								""
 							]
 						}
-					}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.tokens && response.tokens.access) {",
+									"        pm.collectionVariables.set('access_token', response.tokens.access);",
+									"        pm.collectionVariables.set('refresh_token', response.tokens.refresh);",
+									"        console.log('Tokens saved successfully');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
 				},
 				{
 					"name": "JWT Token Login",
@@ -49,7 +68,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+							"raw": "{\n    \"username\": \"{{admin_username}}\",\n    \"password\": \"{{admin_password}}\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/auth/token/",
@@ -63,7 +82,25 @@
 								""
 							]
 						}
-					}
+					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.access) {",
+									"        pm.collectionVariables.set('access_token', response.access);",
+									"        pm.collectionVariables.set('refresh_token', response.refresh);",
+									"        console.log('JWT Tokens saved successfully');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
 				},
 				{
 					"name": "Refresh Token",
@@ -1107,6 +1144,160 @@
 			]
 		},
 		{
+			"name": "Additional Endpoints",
+			"item": [
+				{
+					"name": "Get Cow by Tag Number",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/cows/?tag_number=COW001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cows",
+								""
+							],
+							"query": [
+								{
+									"key": "tag_number",
+									"value": "COW001"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Farms by Agent",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/farms/?agent__role=AGENT",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"farms",
+								""
+							],
+							"query": [
+								{
+									"key": "agent__role",
+									"value": "AGENT"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Search Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/?search=john",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								""
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "john"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Milk Records by Date Range",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/milk-records/?date__gte=2024-01-01&date__lte=2024-01-31",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"milk-records",
+								""
+							],
+							"query": [
+								{
+									"key": "date__gte",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "date__lte",
+									"value": "2024-01-31"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Activities by Type",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/?activity_type=VACCINATION",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								""
+							],
+							"query": [
+								{
+									"key": "activity_type",
+									"value": "VACCINATION"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
 			"name": "Reporting Service (FastAPI)",
 			"item": [
 				{
@@ -1389,6 +1580,137 @@
 							]
 						}
 					}
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reporting_url}}/users/1",
+							"host": [
+								"{{reporting_url}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Farm by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reporting_url}}/farms/1",
+							"host": [
+								"{{reporting_url}}"
+							],
+							"path": [
+								"farms",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Cow by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reporting_url}}/cows/1",
+							"host": [
+								"{{reporting_url}}"
+							],
+							"path": [
+								"cows",
+								"1"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Milk Records with Filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reporting_url}}/milk-records?cow_id=1&farm_id=1&from_date=2024-01-01&to_date=2024-01-31&limit=50",
+							"host": [
+								"{{reporting_url}}"
+							],
+							"path": [
+								"milk-records"
+							],
+							"query": [
+								{
+									"key": "cow_id",
+									"value": "1"
+								},
+								{
+									"key": "farm_id",
+									"value": "1"
+								},
+								{
+									"key": "from_date",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "to_date",
+									"value": "2024-01-31"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Activities with Filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reporting_url}}/activities?cow_id=1&activity_type=VACCINATION&status=COMPLETED&from_date=2024-01-01&to_date=2024-01-31&limit=50",
+							"host": [
+								"{{reporting_url}}"
+							],
+							"path": [
+								"activities"
+							],
+							"query": [
+								{
+									"key": "cow_id",
+									"value": "1"
+								},
+								{
+									"key": "activity_type",
+									"value": "VACCINATION"
+								},
+								{
+									"key": "status",
+									"value": "COMPLETED"
+								},
+								{
+									"key": "from_date",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "to_date",
+									"value": "2024-01-31"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					}
 				}
 			]
 		}
@@ -1432,6 +1754,16 @@
 		{
 			"key": "refresh_token",
 			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "admin_username",
+			"value": "admin",
+			"type": "string"
+		},
+		{
+			"key": "admin_password",
+			"value": "admin123",
 			"type": "string"
 		}
 	]
