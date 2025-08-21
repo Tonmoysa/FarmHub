@@ -121,7 +121,7 @@ class Activity(models.Model):
     def is_overdue(self):
         """Check if the activity is overdue"""
         from datetime import datetime
-        if self.status == Status.PLANNED:
+        if self.status == Activity.Status.PLANNED:
             scheduled_datetime = datetime.combine(self.scheduled_date, self.scheduled_time or datetime.min.time())
             return scheduled_datetime < datetime.now()
         return False
