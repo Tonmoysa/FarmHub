@@ -33,14 +33,13 @@ DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
 # Get allowed hosts from environment or use defaults
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-# ALLOWED_HOSTS = ['*']
 
-# Add Render domains to allowed hosts for production
-if not DEBUG:
-    ALLOWED_HOSTS.extend([
-        '.onrender.com',  # Allow all Render subdomains
-        '.render.com',    # Allow Render domains
-    ])
+# Add Render domains to allowed hosts
+ALLOWED_HOSTS.extend([
+    '.onrender.com',  # Allow all Render subdomains
+    '.render.com',    # Allow Render domains
+    'farmhub-yvh7.onrender.com',  # Your specific Render domain
+])
 
 # Application definition
 
