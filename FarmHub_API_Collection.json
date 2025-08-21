@@ -934,6 +934,95 @@
 					}
 				},
 				{
+					"name": "Log Calving",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Calving - Daisy\",\n    \"cow\": 2,\n    \"scheduled_date\": \"2024-02-15\",\n    \"scheduled_time\": \"03:00:00\",\n    \"description\": \"Daisy gave birth to a healthy calf\",\n    \"cost\": 0.00,\n    \"calf_gender\": \"Female\",\n    \"calf_weight\": 35.5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/activities/log-calving/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								"log-calving",
+								""
+							]
+						}
+					}
+				},
+				{
+					"name": "Log General Activity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Hoof Trimming - Bessie\",\n    \"activity_type\": \"MAINTENANCE\",\n    \"cow\": 1,\n    \"scheduled_date\": \"2024-02-20\",\n    \"scheduled_time\": \"10:00:00\",\n    \"description\": \"Regular hoof trimming maintenance\",\n    \"cost\": 25.00\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/activities/log-activity/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								"log-activity",
+								""
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Cow Activities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/cow-activities/COW001/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								"cow-activities",
+								"COW001",
+								""
+							]
+						}
+					}
+				},
+				{
 					"name": "Activity Summary",
 					"request": {
 						"method": "GET",
