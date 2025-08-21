@@ -275,13 +275,30 @@ The FastAPI reporting service provides read-only, aggregated reports including:
 - Production summaries and trends
 - API documentation at `http://localhost:8001/docs`
 
+## 🏛️ Django Admin Interface
+
+The Django Admin interface is configured for non-technical users with:
+- **User-friendly interface** for all models (Users, Farms, Cows, Milk Records, Activities)
+- **Search functionality** across all fields
+- **Filtering options** by status, date, role, etc.
+- **Inline editing** for related models
+- **Role-based access** - different views for different user types
+- **Bulk operations** for efficient data management
+
+### Access Django Admin:
+- **URL**: `http://localhost:8000/admin/`
+- **SuperAdmin Login**: `admin` / `admin123`
+- **Features**: Complete CRUD operations with intuitive interface
+
 ## 🛠️ Development
 
 ### Technology Stack
 - **Backend**: Django + Django REST Framework
 - **Reporting**: FastAPI + SQLAlchemy
 - **Database**: SQLite (development) / PostgreSQL (production)
-- **Authentication**: Django REST Framework tokens
+- **Authentication**: Django REST Framework tokens + JWT
+- **Admin Interface**: Django Admin with custom configurations
+- **API Documentation**: FastAPI automatic OpenAPI docs
 
 ### Project Structure
 ```
@@ -337,5 +354,6 @@ This project is proprietary software for farm management systems.
 
 For detailed API documentation, visit:
 - Django API: `http://localhost:8000/api/`
+- Django Admin: `http://localhost:8000/admin/`
 - Reporting API: `http://localhost:8001/docs`
 - Postman Collection: `FarmHub_API_Collection.json`
