@@ -99,12 +99,16 @@ WSGI_APPLICATION = 'core_service.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3'),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'farmhub_3l2z',
+        'USER': 'farmhub_3l2z_user',
+        'PASSWORD': 'QCTGvShsswsHjotWftVYt6RktgLGPRht',
+        'HOST': 'dpg-d2jidgn5r7bs73eu3k80-a.oregon-postgres.render.com',
+        'PORT': '5432',
+    }
 }
+
 
 
 # Password validation
