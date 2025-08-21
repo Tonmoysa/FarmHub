@@ -3,10 +3,10 @@ services:
     name: farmhub-reporting-api
     env: python
     plan: free
-    buildCommand: cd reporting && pip install -r requirements-render.txt
+    buildCommand: cd reporting && chmod +x build.sh && ./build.sh
     startCommand: cd reporting && python start_simple.py
     envVars:
       - key: PYTHON_VERSION
-        value: 3.8.12
+        value: 3.11.7
       - key: DATABASE_URL
         sync: false  # You'll need to set this in Render dashboard

@@ -2,4 +2,11 @@
 # exit on error
 set -o errexit
 
-pip install -r requirements.txt
+# Force Python version
+python --version
+
+# Install dependencies
+pip install -r requirements-render.txt
+
+# Test import
+python -c "import fastapi; print('FastAPI imported successfully')"
