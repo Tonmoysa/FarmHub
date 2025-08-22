@@ -413,8 +413,8 @@ async def get_milk_production_filtered(
     if to_date:
         query = query.filter(MilkRecord.date <= to_date)
     
-    # Get records with related data
-    records = query.join(Cow).join(Farm).join(User, MilkRecord.farmer_id == User.id).add_columns(
+    # Get records with related data - using explicit join conditions
+    records = query.join(Cow, MilkRecord.cow_id == Cow.id).join(Farm, Cow.farm_id == Farm.id).join(User, MilkRecord.farmer_id == User.id).add_columns(
         Cow.tag_number,
         Cow.name.label('cow_name'),
         Farm.name.label('farm_name'),
@@ -482,11 +482,17 @@ async def get_recent_activities_summary(
     
     if activity_type:
         query = query.filter(Activity.activity_type == activity_type)
+    # Get activities with related data - using explicit join conditions
     if farm_id:
-        query = query.join(Cow).filter(Cow.farm_id == farm_id)
-    
-    # Get activities with related data
-    activities = query.join(Cow).join(Farm).add_columns(
+        # If farm_id filter is applied, we need to join Cow and Farm for filtering
+        activities = query.join(Cow, Activity.cow_id == Cow.id).join(Farm, Cow.farm_id == Farm.id).filter(Cow.farm_id == farm_id).add_columns(
+            Cow.tag_number,
+            Cow.name.label('cow_name'),
+            Farm.name.label('farm_name')
+        ).order_by(Activity.scheduled_date.desc(), Activity.scheduled_time.desc()).limit(limit).all()
+    else:
+        # If no farm_id filter, we can do the joins normally
+        activities = query.join(Cow, Activity.cow_id == Cow.id).join(Farm, Cow.farm_id == Farm.id).add_columns(
         Cow.tag_number,
         Cow.name.label('cow_name'),
         Farm.name.label('farm_name')
