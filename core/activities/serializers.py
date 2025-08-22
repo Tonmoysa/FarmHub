@@ -136,9 +136,9 @@ class ActivityLogSerializer(serializers.ModelSerializer):
 class VaccinationLogSerializer(serializers.ModelSerializer):
     """Specialized serializer for vaccination logging"""
     cow_tag = serializers.CharField(write_only=True, help_text="Cow tag number")
-    vaccine_name = serializers.CharField(help_text="Name of the vaccine")
-    dosage = serializers.CharField(help_text="Dosage information")
-    veterinarian = serializers.CharField(help_text="Name of the veterinarian")
+    vaccine_name = serializers.CharField(write_only=True, help_text="Name of the vaccine")
+    dosage = serializers.CharField(write_only=True, help_text="Dosage information")
+    veterinarian = serializers.CharField(write_only=True, help_text="Name of the veterinarian")
     
     class Meta:
         model = Activity
@@ -181,17 +181,31 @@ class VaccinationLogSerializer(serializers.ModelSerializer):
         data['status'] = 'COMPLETED'
         
         return data
+    
+    def create(self, validated_data):
+        """Create activity with vaccination data"""
+        # Extract custom fields that don't exist in Activity model
+        cow_tag = validated_data.pop('cow_tag', None)
+        vaccine_name = validated_data.pop('vaccine_name', None)
+        dosage = validated_data.pop('dosage', None)
+        veterinarian = validated_data.pop('veterinarian', None)
+        
+        # Create the activity
+        activity = Activity.objects.create(**validated_data)
+        
+        return activity
 
 class HealthCheckLogSerializer(serializers.ModelSerializer):
     """Specialized serializer for health check logging"""
     cow_tag = serializers.CharField(write_only=True, help_text="Cow tag number")
     health_status = serializers.ChoiceField(
         choices=[('HEALTHY', 'Healthy'), ('SICK', 'Sick'), ('RECOVERING', 'Recovering')],
+        write_only=True,
         help_text="Overall health status"
     )
-    symptoms = serializers.CharField(required=False, help_text="Any symptoms observed")
-    treatment = serializers.CharField(required=False, help_text="Treatment provided")
-    veterinarian = serializers.CharField(help_text="Name of the veterinarian")
+    symptoms = serializers.CharField(required=False, write_only=True, help_text="Any symptoms observed")
+    treatment = serializers.CharField(required=False, write_only=True, help_text="Treatment provided")
+    veterinarian = serializers.CharField(write_only=True, help_text="Name of the veterinarian")
     
     class Meta:
         model = Activity
@@ -237,20 +251,35 @@ class HealthCheckLogSerializer(serializers.ModelSerializer):
         data['status'] = 'COMPLETED'
         
         return data
+    
+    def create(self, validated_data):
+        """Create activity with health check data"""
+        # Extract custom fields that don't exist in Activity model
+        cow_tag = validated_data.pop('cow_tag', None)
+        health_status = validated_data.pop('health_status', None)
+        symptoms = validated_data.pop('symptoms', None)
+        treatment = validated_data.pop('treatment', None)
+        veterinarian = validated_data.pop('veterinarian', None)
+        
+        # Create the activity
+        activity = Activity.objects.create(**validated_data)
+        
+        return activity
 
 class CalvingLogSerializer(serializers.ModelSerializer):
     """Specialized serializer for calving logging"""
     cow_tag = serializers.CharField(write_only=True, help_text="Cow tag number")
     calf_gender = serializers.ChoiceField(
         choices=[('MALE', 'Male'), ('FEMALE', 'Female')],
+        write_only=True,
         help_text="Gender of the calf"
     )
     calf_weight = serializers.DecimalField(
-        max_digits=5, decimal_places=2, required=False,
+        max_digits=5, decimal_places=2, required=False, write_only=True,
         help_text="Weight of the calf in kg"
     )
-    complications = serializers.CharField(required=False, help_text="Any complications during calving")
-    assistance_provided = serializers.BooleanField(default=False, help_text="Whether assistance was provided")
+    complications = serializers.CharField(required=False, write_only=True, help_text="Any complications during calving")
+    assistance_provided = serializers.BooleanField(default=False, write_only=True, help_text="Whether assistance was provided")
     
     class Meta:
         model = Activity
@@ -303,3 +332,17 @@ class CalvingLogSerializer(serializers.ModelSerializer):
         data['status'] = 'COMPLETED'
         
         return data
+    
+    def create(self, validated_data):
+        """Create activity with calving data"""
+        # Extract custom fields that don't exist in Activity model
+        cow_tag = validated_data.pop('cow_tag', None)
+        calf_gender = validated_data.pop('calf_gender', None)
+        calf_weight = validated_data.pop('calf_weight', None)
+        complications = validated_data.pop('complications', None)
+        assistance_provided = validated_data.pop('assistance_provided', None)
+        
+        # Create the activity
+        activity = Activity.objects.create(**validated_data)
+        
+        return activity
