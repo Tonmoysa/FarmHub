@@ -23,9 +23,9 @@ if not DATABASE_URL or DATABASE_URL.startswith("sqlite"):
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-# Use psycopg3 dialect for PostgreSQL
+# Use psycopg2 dialect for PostgreSQL
 if DATABASE_URL.startswith("postgresql://"):
-    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg2://", 1)
 
 # Create engine with appropriate configuration
 if DATABASE_URL.startswith("sqlite"):
