@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """
 Simple startup script for Render deployment
+Uses the full FastAPI app with all endpoints
 """
 
 import os
@@ -13,7 +14,7 @@ if __name__ == "__main__":
     
     try:
         uvicorn.run(
-            "main_minimal:app",
+            "main:app",
             host="0.0.0.0",
             port=port,
             reload=False,

@@ -1,5 +1,7 @@
 """
 Minimal FastAPI app for Render deployment
+WARNING: This is a minimal version with only basic endpoints.
+For production deployment, use main.py instead.
 """
 
 from fastapi import FastAPI

@@ -15,7 +15,7 @@ if __name__ == "__main__":
         # Use subprocess to run uvicorn
         cmd = [
             sys.executable, "-m", "uvicorn",
-            "main_minimal:app",
+            "main:app",
             "--host", "0.0.0.0",
             "--port", port
         ]
