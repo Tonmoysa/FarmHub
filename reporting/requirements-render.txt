@@ -1,9 +1,6 @@
-fastapi==0.88.0
-uvicorn[standard]==0.20.0
-pydantic==1.10.2
-sqlalchemy==1.4.46
+fastapi==0.116.1
+uvicorn[standard]==0.35.0
+pydantic==2.11.7
+sqlalchemy==2.0.43
 psycopg[binary]==3.2.9
-python-multipart==0.0.6
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
-python-dotenv==0.21.1
+python-dotenv==1.0.0

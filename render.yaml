@@ -27,7 +27,7 @@ services:
     name: farmhub-fastapi-reporting
     env: python
     plan: free
-    buildCommand: cd reporting && pip install -r requirements.txt
+    buildCommand: cd reporting && pip install -r requirements-render.txt
     startCommand: cd reporting && python start_production.py
     envVars:
       - key: PYTHON_VERSION
