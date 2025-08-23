@@ -466,7 +466,7 @@ curl -X GET "http://localhost:8001/activities?cow_id=1&activity_type=VACCINATION
 
 ## Postman Collection
 
-**Status**: Exported Postman collection pending.
+**Status**: Exported Postman collection added.
 
 A comprehensive Postman collection will be provided for testing all API endpoints with pre-configured authentication and sample request bodies.
 

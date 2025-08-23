@@ -1,0 +1,1435 @@
+{
+	"info": {
+		"_postman_id": "7b08462c-657c-4203-a2f6-dd1bb939958f",
+		"name": "FarmHub API Collection",
+		"description": "Complete API collection for FarmHub farm management platform including Django REST Framework (DRF) core service and FastAPI reporting service. Features role-based authentication, comprehensive CRUD operations, advanced filtering, and detailed reporting endpoints.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47844769",
+		"_collection_link": "https://lunar-star-837447.postman.co/workspace/e84b9efb-2243-4dba-83ef-aa6b28c29328/collection/38696577-7b08462c-657c-4203-a2f6-dd1bb939958f?action=share&source=collection_link&creator=47844769"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.access) {",
+									"        pm.collectionVariables.set('access_token', response.access);",
+									"        pm.collectionVariables.set('refresh_token', response.refresh);",
+									"        console.log('JWT Tokens saved successfully');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{admin_username}}\",\n    \"password\": \"{{admin_password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/token/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"token",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh\": \"{{refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/token/refresh/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"token",
+								"refresh",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"{{access_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/token/verify/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"token",
+								"verify",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh_token\": \"{{refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/logout/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"logout",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/profile/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"old_password\": \"admin123\",\n    \"new_password\": \"newpassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/change_password/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"change_password",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "List Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User (SuperAdmin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Tonmoy\",\n    \"email\": \"tonmoy@example.com\",\n    \"password\": \"farmer123\",\n    \"first_name\": \"Tonmoy\",\n    \"last_name\": \"Saha\",\n    \"role\": \"AGENT\",\n    \"phone_number\": \"+1234567899\",\n    \"address\": \"123 Farm Road\",\n    \"date_of_birth\": \"1990-01-01\",\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/4/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"4",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"smith101@example.com\",\n    \"first_name\": \"Smith\",\n    \"last_name\": \"John\",\n    \"phone_number\": \"+1234567899\",\n    \"address\": \"567 Farm Road\",\n    \"date_of_birth\": \"1990-01-01\",\n    \"is_active\": false,\n    \"role\": \"AGENT\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/4/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"4",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/4/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"4",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Farms",
+			"item": [
+				{
+					"name": "List Farms",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/farms/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"farms",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Farm",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Milk Dairy Farm\",\n    \"location\": \"123 Sunset Road, Dairy County\",\n    \"size_acres\": 200.0,\n    \"description\": \"Modern dairy farm with automated milking\",\n    \"is_active\": true,\n    \"agent_id\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/farms/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"farms",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Farm by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/farms/2/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"farms",
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Farm",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Farm Name (Updated)\",\n    \"location\": \"123 Sunset Road, Dairy County (Updated)\",\n    \"size_acres\": 300.0,\n    \"description\": \"Modern dairy farm with automated milking (Updated)\",\n    \"is_active\": false,\n    \"agent_id\": 6\n}\n\n\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/farms/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"farms",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Farm",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/farms/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"farms",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cows",
+			"item": [
+				{
+					"name": "List Cows",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/cows/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cows",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Cow",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tag_number\": \"COW0036\",\n    \"name\": \"Tom\",\n    \"breed\": \"HOLSTEIN\",\n    \"date_of_birth\": \"2021-05-15\",\n    \"weight_kg\": 600.0,\n    \"height_cm\": 140.0,\n    \"status\": \"ACTIVE\",\n    \"is_pregnant\": false,\n    \"farmer_id\": 3,\n    \"farm_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/cows/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cows",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cow by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/cows/3/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cows",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Cow",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"name\": \"Rosie (Updated)\",\n    \"breed\": \"HOLSTEIN\",\n    \"date_of_birth\": \"2021-05-15\",\n    \"weight_kg\": 600.0,\n    \"height_cm\": 140.0,\n    \"status\": \"ACTIVE\",\n    \"is_pregnant\": true,\n    \"farmer_id\": 3,\n    \"farm_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/cows/2/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cows",
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Cow",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/cows/3/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cows",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Milk Records",
+			"item": [
+				{
+					"name": "List Milk Records",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/milk-records/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"milk-records",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Milk Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cow_id\": 1,\n    \"farmer_id\": 3,\n    \"farm_id\": 1,\n    \"date\": \"2025-08-22\",\n    \"morning_quantity_liters\": 12.5,\n    \"evening_quantity_liters\": 11.8,\n    \"fat_percentage\": 3.85,\n    \"protein_percentage\": 3.20,\n    \"quality_rating\": \"EXCELLENT\",\n    \"notes\": \"Excellent milk quality today\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/milk-records/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"milk-records",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Production Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/milk-records/production-summary/?from_date=2024-01-01&to_date=2025-09-22",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"milk-records",
+								"production-summary",
+								""
+							],
+							"query": [
+								{
+									"key": "from_date",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "to_date",
+									"value": "2025-09-22"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cow Production History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/milk-records/cow-production/COW001/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"milk-records",
+								"cow-production",
+								"COW001",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Activities",
+			"item": [
+				{
+					"name": "List Activities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Activity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cow_id\": 1,\n    \"title\": \"Vaccination - Bessie\",\n    \"activity_type\": \"VACCINATION\",\n    \"cow\": 1,\n    \"scheduled_date\": \"2025-08-20\",\n    \"scheduled_time\": \"09:00:00\",\n    \"description\": \"Annual vaccination schedule\",\n    \"cost\": 45.00\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/activities/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log Vaccination",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cow_tag\": \"COW001\",\n  \"scheduled_date\": \"2025-08-30\",\n  \"scheduled_time\": \"10:30\",\n  \"vaccine_name\": \"FMD Vaccine\",\n  \"dosage\": \"5 ml intramuscular\",\n  \"veterinarian\": \"Dr. Rahman\",\n  \"cost\": 1200,\n  \"notes\": \"First dose of vaccination, booster required after 6 months.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/activities/log-vaccination/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								"log-vaccination",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log Health Check",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cow_tag\": \"COW001\",\n  \"scheduled_date\": \"2025-08-25\",\n  \"scheduled_time\": \"09:15\",\n  \"health_status\": \"HEALTHY\",\n  \"symptoms\": \"Loss of appetite, mild coughing\",\n  \"treatment\": \"Administered antibiotics and provided vitamin supplements\",\n  \"veterinarian\": \"Dr. Anika Sultana\",\n  \"cost\": 1500,\n  \"notes\": \"Follow-up check required in 3 days to monitor progress.\"\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/activities/log-health-check/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								"log-health-check",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log Calving",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cow_tag\": \"COW001\",\n  \"scheduled_date\": \"2025-08-22\",\n  \"scheduled_time\": \"03:45\",\n  \"calf_gender\": \"MALE\",\n  \"calf_weight\": 32.5,\n  \"complications\": \"Minor difficulty, calf required gentle pulling assistance\",\n  \"assistance_provided\": true,\n  \"cost\": 2500,\n  \"notes\": \"Calf is healthy, cow recovering well. Recommend monitoring for 48 hours.\"\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/activities/log-calving/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								"log-calving",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log General Activity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cow_tag\": \"COW001\",\n  \"title\": \"Morning Milking Session\",\n  \"activity_type\": \"MILKING\",\n  \"scheduled_date\": \"2025-08-23\",\n  \"scheduled_time\": \"06:00\",\n  \"start_time\": \"2025-08-23 06:05\",\n  \"end_time\": \"2025-08-23 06:25\",\n  \"status\": \"COMPLETED\",\n  \"description\": \"Morning milking session carried out for daily milk collection.\",\n  \"notes\": \"Yield was slightly lower than average due to feed change.\",\n  \"cost\": 500\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/activities/log-activity/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								"log-activity",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cow Activities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/cow-activities/COW001/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								"cow-activities",
+								"COW001",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activity Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/activity-summary/?from_date=2024-01-01&to_date=2024-01-31",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								"activity-summary",
+								""
+							],
+							"query": [
+								{
+									"key": "from_date",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "to_date",
+									"value": "2024-01-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Overdue Activities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/overdue-activities/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								"overdue-activities",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upcoming Activities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/upcoming-activities/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								"upcoming-activities",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Additional Endpoints",
+			"item": [
+				{
+					"name": "Get Cow by Tag Number",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/cows/?tag_number=COW001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"cows",
+								""
+							],
+							"query": [
+								{
+									"key": "tag_number",
+									"value": "COW001"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Farms by Agent",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/farms/?agent__role=AGENT",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"farms",
+								""
+							],
+							"query": [
+								{
+									"key": "agent__role",
+									"value": "AGENT"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/?search=john",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								""
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "john"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Milk Records by Date Range",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/milk-records/?date__gte=2024-01-01&date__lte=2024-01-31",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"milk-records",
+								""
+							],
+							"query": [
+								{
+									"key": "date__gte",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "date__lte",
+									"value": "2024-01-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Activities by Type",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/activities/?activity_type=VACCINATION",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"activities",
+								""
+							],
+							"query": [
+								{
+									"key": "activity_type",
+									"value": "VACCINATION"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reporting Service (FastAPI)",
+			"item": [
+				{
+					"name": "Production Summary Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reporting_url}}/reports/production-summary?from_date=2024-01-01&to_date=2026-01-31",
+							"host": [
+								"{{reporting_url}}"
+							],
+							"path": [
+								"reports",
+								"production-summary"
+							],
+							"query": [
+								{
+									"key": "from_date",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "to_date",
+									"value": "2026-01-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activity Summary Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reporting_url}}/reports/activity-summary?from_date=2024-01-01&to_date=2024-09-30",
+							"host": [
+								"{{reporting_url}}"
+							],
+							"path": [
+								"reports",
+								"activity-summary"
+							],
+							"query": [
+								{
+									"key": "from_date",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "to_date",
+									"value": "2024-09-30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Farm Summary Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reporting_url}}/reports/farm-summary?farm_id=2",
+							"host": [
+								"{{reporting_url}}"
+							],
+							"path": [
+								"reports",
+								"farm-summary"
+							],
+							"query": [
+								{
+									"key": "farm_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Milk Production Filtered",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reporting_url}}/reports/milk-production?farm_id=1&farmer_id=3&from_date=2024-01-01&to_date=2024-01-31",
+							"host": [
+								"{{reporting_url}}"
+							],
+							"path": [
+								"reports",
+								"milk-production"
+							],
+							"query": [
+								{
+									"key": "farm_id",
+									"value": "1"
+								},
+								{
+									"key": "farmer_id",
+									"value": "3"
+								},
+								{
+									"key": "from_date",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "to_date",
+									"value": "2024-01-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recent Activities Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reporting_url}}/reports/recent-activities?days=7&farm_id=2&activity_type=VACCINATION&limit=50",
+							"host": [
+								"{{reporting_url}}"
+							],
+							"path": [
+								"reports",
+								"recent-activities"
+							],
+							"query": [
+								{
+									"key": "days",
+									"value": "7"
+								},
+								{
+									"key": "farm_id",
+									"value": "2"
+								},
+								{
+									"key": "activity_type",
+									"value": "VACCINATION"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://farmhub-yvh7.onrender.com"
+		},
+		{
+			"key": "reporting_url",
+			"value": "https://farmhub-1.onrender.com"
+		},
+		{
+			"key": "access_token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU1OTU1ODQ0LCJpYXQiOjE3NTU5NTIyNDQsImp0aSI6IjllNDQxNDg2NDYyOTQ1OWJiOWVkMmVkNWNjNDlkYjU4IiwidXNlcl9pZCI6IjEifQ.K-tjdwiIBmxgW-vNpDi54ANuSBEANZHa-qzEsff4lT0"
+		},
+		{
+			"key": "refresh_token",
+			"value": ""
+		},
+		{
+			"key": "admin_username",
+			"value": "admin"
+		},
+		{
+			"key": "admin_password",
+			"value": "admin123"
+		}
+	]
+}
