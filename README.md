@@ -170,8 +170,8 @@ The system comes pre-loaded with sample data via `core/fixtures/initial_data.jso
 
 ### Users
 - **SuperAdmin**: `admin` / `admin123`
-- **Agent**: `agent1` / `agent123`
-- **Farmer**: `farmer1` / `farmer123`
+- **Agent**: `agent1` / `@@farmhub113424@@`
+- **Farmer**: `farmer1` / `@@farmhub113424@@`
 
 ### Sample Data
 - **1 Farm**: Green Valley Farm (150 acres)
